@@ -1,0 +1,17 @@
+#成功
+SUCCESS=0
+
+#用户提交数据校验验证失败
+VALIDATE_FAILED=1001
+
+#认证失败
+AUTH_FAILED=2000
+
+#认证过期
+AUTH_EXPIRED=2001
+
+#无权访问
+ACCESS_DENIED=3000
+
+#访问次数超过上限
+TOO_MANY_REQUEST=4000

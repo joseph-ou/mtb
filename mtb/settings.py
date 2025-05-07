@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.base.apps.BaseConfig',
     'apps.task.apps.TaskConfig',
     'apps.msg.apps.MsgConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -130,6 +131,13 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# REST FRAMEWORK 浅显原因分析：在启动Django项目时，会调用到 django.contrib.contenttypes ，由于被注销了，所以报错。根本原因是Django在匿名登录启动时
+# ，认证组件中的你们用户导致。我这里写的比较简单，如果想深究里面原因，在B站找武沛齐老师的Django课程，里面有详细的介绍。
+REST_FRAMEWORK={
+    "UNAUTHENTICATED_USER": None,
+}
 
 
 try:
