@@ -28,7 +28,7 @@ class AuthViews(APIView):
 
         # print(request.version)
         # return Response('GET请求')
-        return Response({"code":'100','data':'get请求成功'})
+        return Response({"code":return_code.SUCCESS,'data':'get请求成功'})
 
 
     def post(self, request,*args, **kwargs):
@@ -66,6 +66,7 @@ class AuthViews(APIView):
             'user_id':user_object.id,#自定义用户id
             'username':user_object.username,#自定义用户名
             'exp':datetime.datetime.now()+datetime.timedelta(days=7)#超时时间
+            # 'exp':datetime.datetime.now()+datetime.timedelta(seconds=7)#超时时间
         }
 
         token=jwt.encode(payload=payload, key=settings.SECRET_KEY, algorithm='HS256', headers=headers)
@@ -94,7 +95,7 @@ class TestViews(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        #通过自定义的jwt token验证后可以直接查询request.user和request.auth
+        #通过自定义的jwt token验证后可以直接查询request.user和request.auth 自定义的封装 具体查看utils/auth.py
         # print(request.user.user_id)
         # print(request.user.username)
         # print(request.user.exp)

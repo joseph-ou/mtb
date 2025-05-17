@@ -8,7 +8,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from .. import return_code
 
 
-#格式化字典封装数据并且返回
+#格式 化字典封装数据并且返回
 class CurrentUser(object):
 
     def __init__(self,user_id,username,exp):
@@ -16,6 +16,9 @@ class CurrentUser(object):
         self.username = username
         self.exp = exp
 
+#重写AuthenticationFailed类
+class MtbAuthenticationFailed(AuthenticationFailed):
+    status_code = 200
 
 
 class JwtTokenAuthentication(BaseAuthentication):
@@ -33,12 +36,15 @@ class JwtTokenAuthentication(BaseAuthentication):
 
         #第二种提取jwt token的方法 去请求头中提取
         token = request.META.get('HTTP_AUTHORIZATION',b'')
-        print(token)
+        # print(token)
 
         #验证失败 抛出异常
         #raise exceptions.AuthenticationFailed('用户认证失败')
         if not token:
-            raise AuthenticationFailed({'coed':return_code.AUTH_FAILED,'detail':'认证失败'})
+            #状态码401 内容=>{code:2000,detail:'token不存在认证失败'}
+            #默认使用状态码
+            # raise AuthenticationFailed({'code':return_code.AUTH_FAILED,'detail':'token不存在认证失败'})
+            raise MtbAuthenticationFailed({'code':return_code.AUTH_FAILED,'detail':'token不存在认证失败'})
 
         #验证jwt token
         #成功 return xx,xxx #request.user/request.auth
@@ -50,7 +56,7 @@ class JwtTokenAuthentication(BaseAuthentication):
 
 
         except Exception as e:
-            raise AuthenticationFailed({'coed':return_code.AUTH_FAILED,'detail':'认证失败'})
+            raise AuthenticationFailed({'code':return_code.AUTH_FAILED,'detail':'认证失败'})
 
 
     def authenticate_header(self, request):
